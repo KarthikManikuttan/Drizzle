@@ -7,6 +7,7 @@ class SignUpProvider extends ChangeNotifier {
   bool hasPassword = false;
   bool hasConfirmPassword = false;
   bool hasText = false;
+  bool isPasswordValidated = false;
 
   void textFieldValidation({
     required TextEditingController emailController,
@@ -26,6 +27,9 @@ class SignUpProvider extends ChangeNotifier {
       hasEmail && hasPassword && hasName && hasConfirmPassword == true
           ? hasText = true
           : hasText = false;
+      confirmPasswordController.text.trim() == passwordController.text.trim()
+          ? isPasswordValidated = true
+          : isPasswordValidated = false;
       notifyListeners();
     });
     nameController.addListener(() {
@@ -42,16 +46,19 @@ class SignUpProvider extends ChangeNotifier {
       hasEmail && hasPassword && hasName && hasConfirmPassword == true
           ? hasText = true
           : hasText = false;
+      confirmPasswordController.text.trim() == passwordController.text.trim()
+          ? isPasswordValidated = true
+          : isPasswordValidated = false;
       notifyListeners();
     });
   }
 
   Color toggleContainerColor() {
-    return hasText ? primaryBlueColor : const Color(0xffF3F6F6);
+    return hasText && isPasswordValidated ? primaryBlueColor : const Color(0xffF3F6F6);
   }
 
   Color toggleContainerTextColor() {
-    Color color = hasText ? Colors.white : const Color(0xff797C7B);
+    Color color = hasText && isPasswordValidated ? Colors.white : const Color(0xff797C7B);
     return color;
   }
 }

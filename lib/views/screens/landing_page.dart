@@ -1,10 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
+import 'package:drizzle/viewModels/services/auth_services.dart';
+import 'package:drizzle/views/screens/homepage.dart';
 import 'package:drizzle/views/screens/login_page.dart';
 import 'package:drizzle/views/screens/signup_page.dart';
+import 'package:drizzle/views/theme/theme.dart';
 import 'package:drizzle/views/utils/app_icons.dart';
 import 'package:drizzle/views/utils/app_images.dart';
 import 'package:drizzle/views/utils/utils.dart';
 import 'package:drizzle/views/widgets/circle_img_container.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -12,6 +20,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final authServices = Provider.of<AuthServices>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Stack(
@@ -60,17 +69,67 @@ class LandingPage extends StatelessWidget {
                     children: [
                       CircleImgContainer(
                         img: AppIcons.fbIcon,
-                        onTap: () {},
+                        onTap: () {
+                          authServices.signInWithFacebook().then(
+                            (result) {
+                              if (result == null) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Homepage(),
+                                  ),
+                                );
+                              } else {
+                                final snackBar = SnackBar(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  duration: const Duration(seconds: 1),
+                                  content: const Text(
+                                    "Unexpected  error occured !",
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              }
+                            },
+                          );
+                        },
                       ),
                       const SizedBox(width: 10),
-                      CircleImgContainer(
-                        img: isDarkMode ? AppIcons.appleIcon : AppIcons.appleIconBk,
-                        onTap: () {},
-                      ),
-                      const SizedBox(width: 10),
+                      Platform.isIOS
+                          ? Row(
+                              children: [
+                                CircleImgContainer(
+                                  img: isDarkMode ? AppIcons.appleIcon : AppIcons.appleIconBk,
+                                  onTap: () {},
+                                ),
+                                const SizedBox(width: 10),
+                              ],
+                            )
+                          : const SizedBox(),
                       CircleImgContainer(
                         img: AppIcons.googleIcon,
-                        onTap: () {},
+                        onTap: () {
+                          AuthServices().signInWithGoogle().then(
+                            (result) {
+                              if (result == null) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Homepage(),
+                                  ),
+                                );
+                              } else {
+                                final snackBar = SnackBar(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  duration: const Duration(seconds: 1),
+                                  content: Text(
+                                    result,
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              }
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -176,6 +235,18 @@ class LandingPage extends StatelessWidget {
               ),
             ),
           ),
+          authServices.isLoading
+              ? Container(
+                  height: screenHeight(context),
+                  width: screenWidth(context),
+                  color: Colors.black.withOpacity(0.8),
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: primaryBlueColor,
+                    ),
+                  ),
+                )
+              : const SizedBox(),
         ],
       ),
     );

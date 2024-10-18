@@ -17,9 +17,6 @@ class BuildTextformfieldObscuredWidget extends StatelessWidget {
     return Consumer<SignUpProvider>(
       builder: (context, signUpProvider, child) => Consumer<LoginProvider>(
         builder: (context, loginProvider, child) => TextFormField(
-          onTapOutside: (event) {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
           obscureText: true,
           controller: textController,
           decoration: InputDecoration(

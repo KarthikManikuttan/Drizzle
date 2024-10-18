@@ -1,7 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:drizzle/models/signup_email_model.dart';
 import 'package:drizzle/viewModels/provider/signup_provider.dart';
+import 'package:drizzle/viewModels/services/auth_services.dart';
 import 'package:drizzle/views/screens/homepage.dart';
 import 'package:drizzle/views/utils/app_icons.dart';
 import 'package:drizzle/views/utils/utils.dart';
+import 'package:drizzle/views/widgets/auth_button_widget.dart';
 import 'package:drizzle/views/widgets/build_textformfield_obscured_widget.dart';
 import 'package:drizzle/views/widgets/build_textformfield_widget.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +32,9 @@ class SignUpPage extends StatelessWidget {
         confirmPasswordController: confirmPasswordController,
       );
     });
+    final signUpProvider = Provider.of<SignUpProvider>(context);
+    final authServices = Provider.of<AuthServices>(context);
+
     bool isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Scaffold(
@@ -127,36 +135,42 @@ class SignUpPage extends StatelessWidget {
                   textController: confirmPasswordController,
                 ),
                 const Spacer(flex: 2),
-                Consumer<SignUpProvider>(
-                  builder: (context, signUpProvider, child) => GestureDetector(
-                    onTap: signUpProvider.hasText
-                        ? () {
-                            Navigator.pushAndRemoveUntil(
+                AuthButtonWidget(
+                  onTap: signUpProvider.hasText && signUpProvider.isPasswordValidated
+                      ? () {
+                          authServices
+                              .signUpWithEmail(
+                            signUpEmailModel: SignupEmailModel(
+                              name: nameController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          )
+                              .then((result) {
+                            if (result == null) {
+                              Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => Homepage()),
-                                (Route route) => false);
-                          }
-                        : null,
-                    child: Container(
-                      height: 50,
-                      width: screenWidth(context),
-                      decoration: BoxDecoration(
-                        color: signUpProvider.toggleContainerColor(),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Create an account",
-                          style: TextStyle(
-                            color: signUpProvider.toggleContainerTextColor(),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Outfit",
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                                MaterialPageRoute(
+                                  builder: (context) => const Homepage(),
+                                ),
+                              );
+                            } else {
+                              final snackBar = SnackBar(
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                duration: const Duration(seconds: 1),
+                                content: Text(
+                                  result,
+                                ),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
+                          });
+                        }
+                      : null,
+                  buttonColor: signUpProvider.toggleContainerColor(),
+                  textColor: signUpProvider.toggleContainerTextColor(),
+                  isLoading: authServices.isLoading,
+                  text: "Create an account",
                 ),
                 SizedBox(height: screenHeight(context, dividedBy: 23))
               ],

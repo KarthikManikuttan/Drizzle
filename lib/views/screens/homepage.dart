@@ -1,5 +1,9 @@
-import 'package:drizzle/models/profiles_models.dart';
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:drizzle/viewModels/profiles_view_models.dart';
+import 'package:drizzle/viewModels/services/auth_services.dart';
 import 'package:drizzle/views/screens/chat_page.dart';
+import 'package:drizzle/views/screens/landing_page.dart';
 import 'package:drizzle/views/utils/app_icons.dart';
 import 'package:drizzle/views/utils/app_images.dart';
 import 'package:drizzle/views/utils/utils.dart';
@@ -7,82 +11,7 @@ import 'package:drizzle/views/widgets/circle_img_container.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatelessWidget {
-  Homepage({super.key});
-
-  final List<ProfilesModels> profiles = [
-    ProfilesModels(
-      imgPath: AppImages.prfl1,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl2,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl3,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl4,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl5,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl6,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl1,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl2,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl3,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl4,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl5,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl6,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl1,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl2,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl3,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl4,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl5,
-      userName: "Alex Linderson",
-    ),
-    ProfilesModels(
-      imgPath: AppImages.prfl6,
-      userName: "Alex Linderson",
-    ),
-  ];
+  const Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -116,9 +45,34 @@ class Homepage extends StatelessWidget {
                         height: 1.2,
                       ),
                     ),
-                    const CircleAvatar(
-                      radius: 22,
-                      backgroundImage: AssetImage(AppImages.testAvatar),
+                    GestureDetector(
+                      onTap: () {
+                        AuthServices().signOut().then(
+                          (result) {
+                            if (result == null) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LandingPage(),
+                                ),
+                              );
+                            } else {
+                              final snackBar = SnackBar(
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                duration: const Duration(seconds: 1),
+                                content: Text(
+                                  result,
+                                ),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
+                          },
+                        );
+                      },
+                      child: const CircleAvatar(
+                        radius: 22,
+                        backgroundImage: AssetImage(AppImages.testAvatar),
+                      ),
                     )
                   ],
                 ),
@@ -145,7 +99,7 @@ class Homepage extends StatelessWidget {
                           color: Theme.of(context).colorScheme.outline,
                           thickness: 0.15,
                         ),
-                        itemCount: profiles.length,
+                        itemCount: ProfilesViewModels().profiles.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -153,8 +107,8 @@ class Homepage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ChatPage(
-                                    imgPath: profiles[index].imgPath,
-                                    userName: profiles[index].userName,
+                                    imgPath: ProfilesViewModels().profiles[index].imgPath,
+                                    userName: ProfilesViewModels().profiles[index].userName,
                                   ),
                                 ),
                               );
@@ -166,11 +120,12 @@ class Homepage extends StatelessWidget {
                               child: Row(
                                 children: [
                                   CircleAvatar(
-                                    backgroundImage: AssetImage(profiles[index].imgPath),
+                                    backgroundImage:
+                                        AssetImage(ProfilesViewModels().profiles[index].imgPath),
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
-                                    profiles[index].userName,
+                                    ProfilesViewModels().profiles[index].userName,
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
                                       fontSize: 15,

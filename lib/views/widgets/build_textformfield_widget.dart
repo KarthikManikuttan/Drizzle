@@ -11,9 +11,6 @@ class BuildTextformfieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onTapOutside: (event) {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
       controller: textController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
