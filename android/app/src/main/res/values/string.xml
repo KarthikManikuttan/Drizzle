@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Drizzle</string>
+    <string name="facebook_app_id">538081302508519</string>
+    <string name="fb_login_protocol_scheme">fb538081302508519</string>
+    <string name="facebook_client_token">c1d17acbfad3c6b9969016aa3675ad1a</string>
+</resources>

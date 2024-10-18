@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "786229327351",
+    "project_id": "drizzle-e0659",
+    "storage_bucket": "drizzle-e0659.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786229327351:android:123778973fe0d26db0eaf2",
+        "android_client_info": {
+          "package_name": "com.karthik.drizzle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGOMnsL-pA3Jqc-8GVc2EW2TBcA66WC8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
