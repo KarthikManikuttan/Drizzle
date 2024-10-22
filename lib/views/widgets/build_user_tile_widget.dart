@@ -11,10 +11,9 @@ class UserTile extends StatelessWidget {
     super.key,
     required this.text,
     this.onTap,
-    required this.profileImageUrl, required this.receiverId,
+    required this.profileImageUrl,
+    required this.receiverId,
   });
-
-  
 
   @override
   Widget build(BuildContext context) {

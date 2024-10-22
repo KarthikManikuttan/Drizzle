@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drizzle/viewModels/services/auth_services.dart';
 import 'package:drizzle/viewModels/services/chat_services.dart';
+import 'package:drizzle/views/theme/theme.dart';
 import 'package:drizzle/views/utils/app_icons.dart';
 import 'package:drizzle/views/utils/utils.dart';
 import 'package:drizzle/views/widgets/build_message_container.dart';
@@ -81,12 +82,16 @@ class ChatPage extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: primaryBlueColor,
+                    ),
                   );
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: primaryBlueColor,
+                    ),
                   );
                 }
 

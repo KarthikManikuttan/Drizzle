@@ -15,6 +15,23 @@ class ChatServices {
     });
   }
 
+  Stream<QuerySnapshot> getLastMessage(String senderId, String receiverId) {
+    return FirebaseFirestore.instance
+        .collection('chats')
+        .doc(getChatId(senderId, receiverId))
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .limit(1)
+        .snapshots();
+  }
+
+  String getChatId(senderId, receiverId) {
+    List<String> ids = [senderId, receiverId];
+    ids.sort();
+    String chatId = ids.join('_');
+    return chatId;
+  }
+
   Future<void> sendMessage(String receiverId, String message) async {
     final String currentUserId = AuthServices().getCurrentUser!.uid;
     final String currentUserEmail = AuthServices().getCurrentUser!.email!;
