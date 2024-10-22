@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drizzle/models/signin_email_model.dart';
 import 'package:drizzle/models/signup_email_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,9 +8,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthServices with ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isLoading = false;
 
-  User? get user => _firebaseAuth.currentUser;
+  User? _getCurrentUser() {
+    return _firebaseAuth.currentUser;
+  }
+
+  User? get getCurrentUser => _getCurrentUser();
 
   Future loginWithEmail({required SigninEmailModel signInEmailModel}) async {
     isLoading = true;
@@ -17,6 +23,7 @@ class AuthServices with ChangeNotifier {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: signInEmailModel.email, password: signInEmailModel.password);
+
       isLoading = false;
       notifyListeners();
       return null;
@@ -31,9 +38,13 @@ class AuthServices with ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: signUpEmailModel.email,
         password: signUpEmailModel.password,
+      );
+      await addUserDetails(
+        userCredential,
+        signUpEmailModel.userName,
       );
       isLoading = false;
       notifyListeners();
@@ -70,10 +81,13 @@ class AuthServices with ChangeNotifier {
 
       final GoogleSignInAuthentication gAuth = await result.authentication;
 
-      await _firebaseAuth.signInWithCredential(GoogleAuthProvider.credential(
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(GoogleAuthProvider.credential(
         accessToken: gAuth.accessToken,
         idToken: gAuth.idToken,
       ));
+
+      await addUserDetails(userCredential, getCurrentUser!.displayName!);
       isLoading = false;
       notifyListeners();
 
@@ -94,7 +108,11 @@ class AuthServices with ChangeNotifier {
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential('${loginResult.accessToken?.tokenString}');
 
-      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
+      await addUserDetails(userCredential, getCurrentUser!.displayName!);
+
       isLoading = false;
       notifyListeners();
       return null;
@@ -103,5 +121,19 @@ class AuthServices with ChangeNotifier {
       notifyListeners();
       return e.message;
     }
+  }
+
+  addUserDetails(
+    UserCredential userCredential,
+    String userName,
+  ) {
+    _firestore.collection("users").doc(userCredential.user!.uid).set(
+      {
+        'uid': userCredential.user!.uid,
+        'email': getCurrentUser!.email,
+        'userName': userName,
+        'profileImage': getCurrentUser!.photoURL,
+      },
+    );
   }
 }

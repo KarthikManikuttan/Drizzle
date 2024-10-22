@@ -11,6 +11,8 @@ ThemeData lightMode = ThemeData(
     secondary: Color(0xFF424242),
     outline: Color(0xFF3F3F3F),
     inverseSurface: Color(0xFFE7E7E7),
+    primaryContainer: Color(0xFF20A090),
+    secondaryContainer: Color(0xFFECECEC),
   ),
 );
 
@@ -23,5 +25,7 @@ ThemeData darkMode = ThemeData(
     secondary: Color(0xffB9C1BE),
     outline: Color(0xffCDD1D0),
     inverseSurface: Color(0xff4E5255),
+    primaryContainer: Color(0xFF20A090),
+    secondaryContainer: Color(0xFF727272),
   ),
 );

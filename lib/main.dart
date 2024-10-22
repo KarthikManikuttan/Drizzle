@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
         debugShowCheckedModeBanner: false,
-        home: auth.currentUser != null ? const Homepage() : const LandingPage(),
+        home: auth.currentUser != null ?  Homepage() : const LandingPage(),
       ),
     );
   }

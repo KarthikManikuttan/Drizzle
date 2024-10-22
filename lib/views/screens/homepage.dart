@@ -1,17 +1,22 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:drizzle/viewModels/profiles_view_models.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drizzle/viewModels/services/auth_services.dart';
+import 'package:drizzle/viewModels/services/chat_services.dart';
 import 'package:drizzle/views/screens/chat_page.dart';
 import 'package:drizzle/views/screens/landing_page.dart';
+import 'package:drizzle/views/theme/theme.dart';
 import 'package:drizzle/views/utils/app_icons.dart';
 import 'package:drizzle/views/utils/app_images.dart';
 import 'package:drizzle/views/utils/utils.dart';
 import 'package:drizzle/views/widgets/circle_img_container.dart';
+import 'package:drizzle/views/widgets/build_user_tile_widget.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+  Homepage({super.key});
+
+  final ChatServices _chatServices = ChatServices();
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +74,13 @@ class Homepage extends StatelessWidget {
                           },
                         );
                       },
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 22,
-                        backgroundImage: AssetImage(AppImages.testAvatar),
+                        backgroundImage: CachedNetworkImageProvider(
+                          AuthServices().getCurrentUser!.photoURL == null
+                              ? AppImages.profileImage
+                              : AuthServices().getCurrentUser!.photoURL!,
+                        ),
                       ),
                     )
                   ],
@@ -94,48 +103,48 @@ class Homepage extends StatelessWidget {
                         overscroll.disallowIndicator();
                         return false;
                       },
-                      child: ListView.separated(
-                        separatorBuilder: (context, index) => Divider(
-                          color: Theme.of(context).colorScheme.outline,
-                          thickness: 0.15,
-                        ),
-                        itemCount: ProfilesViewModels().profiles.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChatPage(
-                                    imgPath: ProfilesViewModels().profiles[index].imgPath,
-                                    userName: ProfilesViewModels().profiles[index].userName,
-                                  ),
+                      child: StreamBuilder(
+                        stream: _chatServices.getUsersStream(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text("Error");
+                          }
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Container(
+                              color: Theme.of(context).colorScheme.surface,
+                              height: screenHeight(context),
+                              width: screenWidth(context),
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: primaryBlueColor,
                                 ),
-                              );
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 60,
-                              width: double.infinity,
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage(ProfilesViewModels().profiles[index].imgPath),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    ProfilesViewModels().profiles[index].userName,
-                                    style: TextStyle(
-                                      color: Theme.of(context).colorScheme.primary,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: "Caros",
-                                    ),
-                                  ),
-                                ],
                               ),
-                            ),
+                            );
+                          }
+                          return ListView(
+                            children: snapshot.data!
+                                .map<Widget>((userData) =>
+                                    userData['email'] != AuthServices().getCurrentUser!.email
+                                        ? UserTile(
+                                            text: userData['userName'],
+                                            receiverId: userData['uid'],
+                                            profileImageUrl:
+                                                userData['profileImage'] ?? AppImages.profileImage,
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ChatPage(
+                                                    imgPath: userData['image'],
+                                                    userName: userData['userName'],
+                                                    receiverId: userData['uid'],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          )
+                                        : const SizedBox())
+                                .toList(),
                           );
                         },
                       ),

@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-
 import 'package:drizzle/viewModels/services/auth_services.dart';
 import 'package:drizzle/views/screens/homepage.dart';
 import 'package:drizzle/views/screens/login_page.dart';
@@ -19,7 +17,6 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final authServices = Provider.of<AuthServices>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -76,7 +73,7 @@ class LandingPage extends StatelessWidget {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const Homepage(),
+                                    builder: (context) => Homepage(),
                                   ),
                                 );
                               } else {
@@ -94,17 +91,6 @@ class LandingPage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(width: 10),
-                      Platform.isIOS
-                          ? Row(
-                              children: [
-                                CircleImgContainer(
-                                  img: isDarkMode ? AppIcons.appleIcon : AppIcons.appleIconBk,
-                                  onTap: () {},
-                                ),
-                                const SizedBox(width: 10),
-                              ],
-                            )
-                          : const SizedBox(),
                       CircleImgContainer(
                         img: AppIcons.googleIcon,
                         onTap: () {
@@ -114,7 +100,7 @@ class LandingPage extends StatelessWidget {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const Homepage(),
+                                    builder: (context) => Homepage(),
                                   ),
                                 );
                               } else {

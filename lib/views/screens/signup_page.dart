@@ -141,30 +141,32 @@ class SignUpPage extends StatelessWidget {
                           authServices
                               .signUpWithEmail(
                             signUpEmailModel: SignupEmailModel(
-                              name: nameController.text,
+                              userName: nameController.text,
                               email: emailController.text,
                               password: passwordController.text,
                             ),
                           )
-                              .then((result) {
-                            if (result == null) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Homepage(),
-                                ),
-                              );
-                            } else {
-                              final snackBar = SnackBar(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                                duration: const Duration(seconds: 1),
-                                content: Text(
-                                  result,
-                                ),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            }
-                          });
+                              .then(
+                            (result) {
+                              if (result == null) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Homepage(),
+                                  ),
+                                );
+                              } else {
+                                final snackBar = SnackBar(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  duration: const Duration(seconds: 1),
+                                  content: Text(
+                                    result,
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              }
+                            },
+                          );
                         }
                       : null,
                   buttonColor: signUpProvider.toggleContainerColor(),
@@ -172,7 +174,7 @@ class SignUpPage extends StatelessWidget {
                   isLoading: authServices.isLoading,
                   text: "Create an account",
                 ),
-                SizedBox(height: screenHeight(context, dividedBy: 23))
+                SizedBox(height: screenHeight(context, dividedBy: 23)),
               ],
             ),
           ),

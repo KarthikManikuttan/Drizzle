@@ -1,7 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'dart:io';
-
 import 'package:drizzle/models/signin_email_model.dart';
 import 'package:drizzle/viewModels/provider/login_provider.dart';
 import 'package:drizzle/viewModels/services/auth_services.dart';
@@ -28,6 +25,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Provider.of<LoginProvider>(context, listen: false).textFieldValidation(
         emailController: emailController,
@@ -99,7 +97,7 @@ class LoginPage extends StatelessWidget {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const Homepage(),
+                                      builder: (context) => Homepage(),
                                     ),
                                   );
                                 } else {
@@ -117,17 +115,6 @@ class LoginPage extends StatelessWidget {
                           },
                         ),
                         const SizedBox(width: 10),
-                        Platform.isIOS
-                            ? Row(
-                                children: [
-                                  CircleImgContainer(
-                                    img: isDarkMode ? AppIcons.appleIcon : AppIcons.appleIconBk,
-                                    onTap: () {},
-                                  ),
-                                  const SizedBox(width: 10),
-                                ],
-                              )
-                            : const SizedBox(),
                         CircleImgContainer(
                           img: AppIcons.googleIcon,
                           onTap: () {
@@ -137,7 +124,7 @@ class LoginPage extends StatelessWidget {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const Homepage(),
+                                      builder: (context) => Homepage(),
                                     ),
                                   );
                                 } else {
@@ -227,7 +214,7 @@ class LoginPage extends StatelessWidget {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const Homepage(),
+                                        builder: (context) => Homepage(),
                                       ),
                                     );
                                   } else {
@@ -247,7 +234,7 @@ class LoginPage extends StatelessWidget {
                       textColor: loginProvider.toggleContainerTextColor(),
                       buttonColor: loginProvider.toggleContainerColor(),
                       text: "Log in",
-                      isLoading: authServices.isLoading,
+                      isLoading: false,
                     ),
                     const SizedBox(height: 15),
                     Align(
