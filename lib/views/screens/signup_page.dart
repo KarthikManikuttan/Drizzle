@@ -137,36 +137,31 @@ class SignUpPage extends StatelessWidget {
                 const Spacer(flex: 2),
                 AuthButtonWidget(
                   onTap: signUpProvider.hasText && signUpProvider.isPasswordValidated
-                      ? () {
-                          authServices
-                              .signUpWithEmail(
+                      ? () async {
+                          dynamic result = await authServices.signUpWithEmail(
                             signUpEmailModel: SignupEmailModel(
                               userName: nameController.text,
                               email: emailController.text,
                               password: passwordController.text,
                             ),
-                          )
-                              .then(
-                            (result) {
-                              if (result == null) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Homepage(),
-                                  ),
-                                );
-                              } else {
-                                final snackBar = SnackBar(
-                                  backgroundColor: Theme.of(context).colorScheme.primary,
-                                  duration: const Duration(seconds: 1),
-                                  content: Text(
-                                    result,
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              }
-                            },
                           );
+                          if (result == null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Homepage(),
+                              ),
+                            );
+                          } else {
+                            final snackBar = SnackBar(
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              duration: const Duration(seconds: 1),
+                              content: Text(
+                                result,
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
                         }
                       : null,
                   buttonColor: signUpProvider.toggleContainerColor(),

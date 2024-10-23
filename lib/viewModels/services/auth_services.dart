@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drizzle/models/signin_email_model.dart';
 import 'package:drizzle/models/signup_email_model.dart';
+import 'package:drizzle/viewModels/services/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -15,14 +16,18 @@ class AuthServices with ChangeNotifier {
     return _firebaseAuth.currentUser;
   }
 
+  FirebaseFirestore get firestore => _firestore;
+
   User? get getCurrentUser => _getCurrentUser();
 
   Future loginWithEmail({required SigninEmailModel signInEmailModel}) async {
     isLoading = true;
     notifyListeners();
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
           email: signInEmailModel.email, password: signInEmailModel.password);
+
+      await FirestoreServices().updateFcm(userCredential);
 
       isLoading = false;
       notifyListeners();
@@ -42,7 +47,7 @@ class AuthServices with ChangeNotifier {
         email: signUpEmailModel.email,
         password: signUpEmailModel.password,
       );
-      await addUserDetails(
+      await FirestoreServices().addUserDetails(
         userCredential,
         signUpEmailModel.userName,
       );
@@ -87,7 +92,7 @@ class AuthServices with ChangeNotifier {
         idToken: gAuth.idToken,
       ));
 
-      await addUserDetails(userCredential, getCurrentUser!.displayName!);
+      await FirestoreServices().addUserDetails(userCredential, getCurrentUser!.displayName!);
       isLoading = false;
       notifyListeners();
 
@@ -111,7 +116,7 @@ class AuthServices with ChangeNotifier {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
-      await addUserDetails(userCredential, getCurrentUser!.displayName!);
+      await FirestoreServices().addUserDetails(userCredential, getCurrentUser!.displayName!);
 
       isLoading = false;
       notifyListeners();
@@ -121,19 +126,5 @@ class AuthServices with ChangeNotifier {
       notifyListeners();
       return e.message;
     }
-  }
-
-  addUserDetails(
-    UserCredential userCredential,
-    String userName,
-  ) {
-    _firestore.collection("users").doc(userCredential.user!.uid).set(
-      {
-        'uid': userCredential.user!.uid,
-        'email': getCurrentUser!.email,
-        'userName': userName,
-        'profileImage': getCurrentUser!.photoURL,
-      },
-    );
   }
 }

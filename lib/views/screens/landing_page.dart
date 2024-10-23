@@ -66,55 +66,49 @@ class LandingPage extends StatelessWidget {
                     children: [
                       CircleImgContainer(
                         img: AppIcons.fbIcon,
-                        onTap: () {
-                          authServices.signInWithFacebook().then(
-                            (result) {
-                              if (result == null) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Homepage(),
-                                  ),
-                                );
-                              } else {
-                                final snackBar = SnackBar(
-                                  backgroundColor: Theme.of(context).colorScheme.primary,
-                                  duration: const Duration(seconds: 1),
-                                  content: const Text(
-                                    "Unexpected  error occured !",
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              }
-                            },
-                          );
+                        onTap: () async {
+                          dynamic result = await authServices.signInWithFacebook();
+                          if (result == null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Homepage(),
+                              ),
+                            );
+                          } else {
+                            final snackBar = SnackBar(
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              duration: const Duration(seconds: 1),
+                              content: const Text(
+                                "Unexpected  error occured !",
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
                         },
                       ),
                       const SizedBox(width: 10),
                       CircleImgContainer(
                         img: AppIcons.googleIcon,
-                        onTap: () {
-                          AuthServices().signInWithGoogle().then(
-                            (result) {
-                              if (result == null) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Homepage(),
-                                  ),
-                                );
-                              } else {
-                                final snackBar = SnackBar(
-                                  backgroundColor: Theme.of(context).colorScheme.primary,
-                                  duration: const Duration(seconds: 1),
-                                  content: Text(
-                                    result,
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              }
-                            },
-                          );
+                        onTap: () async {
+                          dynamic result = await AuthServices().signInWithGoogle();
+                          if (result == null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Homepage(),
+                              ),
+                            );
+                          } else {
+                            final snackBar = SnackBar(
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              duration: const Duration(seconds: 1),
+                              content: Text(
+                                result,
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
                         },
                       ),
                     ],

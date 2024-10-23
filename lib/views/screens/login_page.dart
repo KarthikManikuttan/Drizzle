@@ -25,7 +25,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Provider.of<LoginProvider>(context, listen: false).textFieldValidation(
         emailController: emailController,
@@ -90,55 +89,49 @@ class LoginPage extends StatelessWidget {
                       children: [
                         CircleImgContainer(
                           img: AppIcons.fbIcon,
-                          onTap: () {
-                            authServices.signInWithFacebook().then(
-                              (result) {
-                                if (result == null) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Homepage(),
-                                    ),
-                                  );
-                                } else {
-                                  final snackBar = SnackBar(
-                                    backgroundColor: Theme.of(context).colorScheme.primary,
-                                    duration: const Duration(seconds: 1),
-                                    content: const Text(
-                                      "Unexpected  error occured !",
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                }
-                              },
-                            );
+                          onTap: () async {
+                            dynamic result = await authServices.signInWithFacebook();
+                            if (result == null) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Homepage(),
+                                ),
+                              );
+                            } else {
+                              final snackBar = SnackBar(
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                duration: const Duration(seconds: 1),
+                                content: const Text(
+                                  "Unexpected  error occured !",
+                                ),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
                           },
                         ),
                         const SizedBox(width: 10),
                         CircleImgContainer(
                           img: AppIcons.googleIcon,
-                          onTap: () {
-                            AuthServices().signInWithGoogle().then(
-                              (result) {
-                                if (result == null) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Homepage(),
-                                    ),
-                                  );
-                                } else {
-                                  final snackBar = SnackBar(
-                                    backgroundColor: Theme.of(context).colorScheme.primary,
-                                    duration: const Duration(seconds: 1),
-                                    content: Text(
-                                      result,
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                }
-                              },
-                            );
+                          onTap: () async {
+                            dynamic result = await AuthServices().signInWithGoogle();
+                            if (result == null) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Homepage(),
+                                ),
+                              );
+                            } else {
+                              final snackBar = SnackBar(
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                duration: const Duration(seconds: 1),
+                                content: Text(
+                                  result,
+                                ),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
                           },
                         ),
                       ],
@@ -202,33 +195,28 @@ class LoginPage extends StatelessWidget {
                     const Spacer(),
                     AuthButtonWidget(
                       onTap: loginProvider.hasText
-                          ? () {
-                              authServices
-                                  .loginWithEmail(
-                                      signInEmailModel: SigninEmailModel(
-                                          email: emailController.text,
-                                          password: passwordController.text))
-                                  .then(
-                                (result) {
-                                  if (result == null) {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Homepage(),
-                                      ),
-                                    );
-                                  } else {
-                                    final snackBar = SnackBar(
-                                      backgroundColor: Theme.of(context).colorScheme.primary,
-                                      duration: const Duration(seconds: 1),
-                                      content: Text(
-                                        result,
-                                      ),
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  }
-                                },
+                          ? () async {
+                              dynamic result = await authServices.loginWithEmail(
+                                signInEmailModel: SigninEmailModel(
+                                    email: emailController.text, password: passwordController.text),
                               );
+                              if (result == null) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Homepage(),
+                                  ),
+                                );
+                              } else {
+                                final snackBar = SnackBar(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  duration: const Duration(seconds: 1),
+                                  content: Text(
+                                    result,
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              }
                             }
                           : null,
                       textColor: loginProvider.toggleContainerTextColor(),
