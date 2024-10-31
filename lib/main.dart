@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:drizzle/firebase_options.dart';
 import 'package:drizzle/viewModels/provider/login_provider.dart';
@@ -14,11 +15,38 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+  );
+
+  await AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'high_importance_channel',
+        channelKey: 'basic_channel',
+        channelName: 'Basic notification',
+        channelDescription: 'Notification Channel for basic tests',
+        defaultColor: const Color(0xff9D50DD),
+        ledColor: Colors.white,
+        importance: NotificationImportance.Max,
+        channelShowBadge: true,
+        onlyAlertOnce: true,
+        playSound: true,
+        criticalAlerts: true,
+      ),
+    ],
+    channelGroups: [
+      NotificationChannelGroup(
+        channelGroupKey: 'high_importance_group_channel',
+        channelGroupName: "group1",
+      ),
+    ],
+    debug: true,
   );
 
   // runApp(
@@ -38,7 +66,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
-    
 
     return MultiProvider(
       providers: [
@@ -51,7 +78,7 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
         debugShowCheckedModeBanner: false,
-        home: auth.currentUser != null ?  Homepage() : const LandingPage(),
+        home: auth.currentUser != null ? Homepage() : const LandingPage(),
       ),
     );
   }

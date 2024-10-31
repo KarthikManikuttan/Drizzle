@@ -8,13 +8,10 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthServices with ChangeNotifier {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isLoading = false;
 
-  User? _getCurrentUser() {
-    return _firebaseAuth.currentUser;
-  }
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   FirebaseFirestore get firestore => _firestore;
 
@@ -126,5 +123,9 @@ class AuthServices with ChangeNotifier {
       notifyListeners();
       return e.message;
     }
+  }
+
+  User? _getCurrentUser() {
+    return _firebaseAuth.currentUser;
   }
 }

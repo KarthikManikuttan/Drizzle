@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drizzle/viewModels/services/auth_services.dart';
 import 'package:drizzle/viewModels/services/chat_services.dart';
 import 'package:drizzle/viewModels/services/firestore_services.dart';
+import 'package:drizzle/viewModels/services/notification_services.dart';
 import 'package:drizzle/views/screens/chat_page.dart';
 import 'package:drizzle/views/screens/landing_page.dart';
 import 'package:drizzle/views/theme/theme.dart';
@@ -53,26 +54,25 @@ class Homepage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        dynamic result = await AuthServices().signOut();
-                        if (result == null) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LandingPage(),
-                            ),
-                          );
-                        } else {
-                          final snackBar = SnackBar(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            duration: const Duration(seconds: 1),
-                            content: Text(
-                              result,
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-
-                        FirestoreServices().fcmToken();
+                        // dynamic result = await AuthServices().signOut();
+                        // if (result == null) {
+                        //   Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => const LandingPage(),
+                        //     ),
+                        //   );
+                        // } else {
+                        //   final snackBar = SnackBar(
+                        //     backgroundColor: Theme.of(context).colorScheme.primary,
+                        //     duration: const Duration(seconds: 1),
+                        //     content: Text(
+                        //       result,
+                        //     ),
+                        //   );
+                        //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        // }
+                        NotificationServices().showNotification();
                       },
                       child: CircleAvatar(
                         radius: 22,

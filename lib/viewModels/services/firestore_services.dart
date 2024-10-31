@@ -1,4 +1,5 @@
 import 'package:drizzle/viewModels/services/auth_services.dart';
+import 'package:drizzle/viewModels/services/notification_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -7,7 +8,11 @@ class FirestoreServices {
     UserCredential userCredential,
     String userName,
   ) async {
+    await FirebaseMessaging.instance.requestPermission();
+    await NotificationServices().initializeNotification();
+
     String fcm = await fcmToken();
+    print("fcm ===== $fcm");
     await AuthServices().firestore.collection("users").doc(userCredential.user!.uid).set(
       {
         'uid': userCredential.user!.uid,
