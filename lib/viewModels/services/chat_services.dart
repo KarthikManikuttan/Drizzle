@@ -35,6 +35,7 @@ class ChatServices {
   Future<void> sendMessage(String receiverId, String message) async {
     final String currentUserId = AuthServices().getCurrentUser!.uid;
     final String currentUserEmail = AuthServices().getCurrentUser!.email!;
+    final String currentUserName = AuthServices().getCurrentUser!.displayName!;
     final Timestamp timestamp = Timestamp.now();
 
     ChatModel newMessage = ChatModel(
@@ -43,6 +44,7 @@ class ChatServices {
       receiverId: receiverId,
       message: message,
       timeStamp: timestamp,
+      senderName : currentUserName,
     );
     List<String> ids = [currentUserId, receiverId];
     ids.sort();

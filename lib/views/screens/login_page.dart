@@ -21,7 +21,8 @@ class LoginPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,8 @@ class LoginPage extends StatelessWidget {
       );
     });
 
-    bool isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    bool isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     final loginProvider = Provider.of<LoginProvider>(context);
     final authServices = Provider.of<AuthServices>(context);
     return Scaffold(
@@ -56,7 +58,8 @@ class LoginPage extends StatelessWidget {
                           height: 50,
                           width: 25,
                           color: Colors.transparent,
-                          child: SvgPicture.asset(isDarkMode ? AppIcons.backw : AppIcons.back)),
+                          child: SvgPicture.asset(
+                              isDarkMode ? AppIcons.backw : AppIcons.back)),
                     ),
                     const SizedBox(height: 30),
                     Text(
@@ -90,7 +93,8 @@ class LoginPage extends StatelessWidget {
                         CircleImgContainer(
                           img: AppIcons.fbIcon,
                           onTap: () async {
-                            dynamic result = await authServices.signInWithFacebook();
+                            dynamic result =
+                                await authServices.signInWithFacebook();
                             if (result == null) {
                               Navigator.pushReplacement(
                                 context,
@@ -100,13 +104,15 @@ class LoginPage extends StatelessWidget {
                               );
                             } else {
                               final snackBar = SnackBar(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
                                 duration: const Duration(seconds: 1),
                                 content: const Text(
                                   "Unexpected  error occured !",
                                 ),
                               );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
                             }
                           },
                         ),
@@ -114,7 +120,8 @@ class LoginPage extends StatelessWidget {
                         CircleImgContainer(
                           img: AppIcons.googleIcon,
                           onTap: () async {
-                            dynamic result = await AuthServices().signInWithGoogle();
+                            dynamic result =
+                                await AuthServices().signInWithGoogle();
                             if (result == null) {
                               Navigator.pushReplacement(
                                 context,
@@ -124,13 +131,15 @@ class LoginPage extends StatelessWidget {
                               );
                             } else {
                               final snackBar = SnackBar(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
                                 duration: const Duration(seconds: 1),
                                 content: Text(
                                   result,
                                 ),
                               );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
                             }
                           },
                         ),
@@ -143,7 +152,10 @@ class LoginPage extends StatelessWidget {
                         children: <Widget>[
                           Expanded(
                             child: Divider(
-                              color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .outline
+                                  .withOpacity(0.7),
                               thickness: 0.5,
                             ),
                           ),
@@ -160,7 +172,10 @@ class LoginPage extends StatelessWidget {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Divider(
-                              color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .outline
+                                  .withOpacity(0.7),
                               thickness: 0.5,
                             ),
                           ),
@@ -196,9 +211,11 @@ class LoginPage extends StatelessWidget {
                     AuthButtonWidget(
                       onTap: loginProvider.hasText
                           ? () async {
-                              dynamic result = await authServices.loginWithEmail(
+                              dynamic result =
+                                  await authServices.loginWithEmail(
                                 signInEmailModel: SigninEmailModel(
-                                    email: emailController.text, password: passwordController.text),
+                                    email: emailController.text,
+                                    password: passwordController.text),
                               );
                               if (result == null) {
                                 Navigator.pushReplacement(
@@ -209,13 +226,15 @@ class LoginPage extends StatelessWidget {
                                 );
                               } else {
                                 final snackBar = SnackBar(
-                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
                                   duration: const Duration(seconds: 1),
                                   content: Text(
                                     result,
                                   ),
                                 );
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
                               }
                             }
                           : null,

@@ -13,12 +13,16 @@ class LoginProvider extends ChangeNotifier {
     required TextEditingController passwordController,
   }) {
     emailController.addListener(() {
-      emailController.text.trim().isNotEmpty ? hasEmail = true : hasEmail = false;
+      emailController.text.trim().isNotEmpty
+          ? hasEmail = true
+          : hasEmail = false;
       hasEmail && hasPassword == true ? hasText = true : hasText = false;
       notifyListeners();
     });
     passwordController.addListener(() {
-      passwordController.text.trim().isNotEmpty ? hasPassword = true : hasPassword = false;
+      passwordController.text.trim().isNotEmpty
+          ? hasPassword = true
+          : hasPassword = false;
       hasEmail && hasPassword == true ? hasText = true : hasText = false;
       notifyListeners();
     });

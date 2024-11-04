@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 class ChatBubbleWidget extends StatelessWidget {
   final String message;
   final bool isCurrentUser;
-  const ChatBubbleWidget({super.key, required this.message, required this.isCurrentUser});
+  const ChatBubbleWidget(
+      {super.key, required this.message, required this.isCurrentUser});
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    bool isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Container(
-      constraints: const BoxConstraints(minHeight: 45, maxWidth: 250, minWidth: 50),
+      constraints:
+          const BoxConstraints(minHeight: 45, maxWidth: 250, minWidth: 50),
       decoration: BoxDecoration(
         color: isCurrentUser
             ? Theme.of(context).colorScheme.primaryContainer

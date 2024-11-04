@@ -21,8 +21,10 @@ class AuthServices with ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-          email: signInEmailModel.email, password: signInEmailModel.password);
+      UserCredential userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
+              email: signInEmailModel.email,
+              password: signInEmailModel.password);
 
       await FirestoreServices().updateFcm(userCredential);
 
@@ -40,7 +42,8 @@ class AuthServices with ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: signUpEmailModel.email,
         password: signUpEmailModel.password,
       );
@@ -83,13 +86,14 @@ class AuthServices with ChangeNotifier {
 
       final GoogleSignInAuthentication gAuth = await result.authentication;
 
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(GoogleAuthProvider.credential(
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(GoogleAuthProvider.credential(
         accessToken: gAuth.accessToken,
         idToken: gAuth.idToken,
       ));
 
-      await FirestoreServices().addUserDetails(userCredential, getCurrentUser!.displayName!);
+      await FirestoreServices()
+          .addUserDetails(userCredential, getCurrentUser!.displayName!);
       isLoading = false;
       notifyListeners();
 
@@ -108,12 +112,14 @@ class AuthServices with ChangeNotifier {
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
       final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential('${loginResult.accessToken?.tokenString}');
+          FacebookAuthProvider.credential(
+              '${loginResult.accessToken?.tokenString}');
 
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
 
-      await FirestoreServices().addUserDetails(userCredential, getCurrentUser!.displayName!);
+      await FirestoreServices()
+          .addUserDetails(userCredential, getCurrentUser!.displayName!);
 
       isLoading = false;
       notifyListeners();

@@ -21,7 +21,8 @@ class BuildTextformfieldObscuredWidget extends StatelessWidget {
           controller: textController,
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.outline),
             ),
             focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: primaryBlueColor),

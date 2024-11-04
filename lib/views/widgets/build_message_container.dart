@@ -16,7 +16,8 @@ class BuildMessageContainer extends StatelessWidget {
 
     DateTime dateTime = (data['timeStamp'] as Timestamp).toDate();
 
-    var alignment = isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+    var alignment =
+        isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -24,7 +25,8 @@ class BuildMessageContainer extends StatelessWidget {
         children: [
           Container(
             alignment: alignment,
-            child: ChatBubbleWidget(message: data['message'], isCurrentUser: isCurrentUser),
+            child: ChatBubbleWidget(
+                message: data['message'], isCurrentUser: isCurrentUser),
           ),
           const SizedBox(height: 5),
           Container(

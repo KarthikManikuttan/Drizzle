@@ -16,14 +16,18 @@ class SignUpProvider extends ChangeNotifier {
     required TextEditingController confirmPasswordController,
   }) {
     emailController.addListener(() {
-      emailController.text.trim().isNotEmpty ? hasEmail = true : hasEmail = false;
+      emailController.text.trim().isNotEmpty
+          ? hasEmail = true
+          : hasEmail = false;
       hasEmail && hasPassword && hasName && hasConfirmPassword == true
           ? hasText = true
           : hasText = false;
       notifyListeners();
     });
     passwordController.addListener(() {
-      passwordController.text.trim().isNotEmpty ? hasPassword = true : hasPassword = false;
+      passwordController.text.trim().isNotEmpty
+          ? hasPassword = true
+          : hasPassword = false;
       hasEmail && hasPassword && hasName && hasConfirmPassword == true
           ? hasText = true
           : hasText = false;
@@ -54,11 +58,14 @@ class SignUpProvider extends ChangeNotifier {
   }
 
   Color toggleContainerColor() {
-    return hasText && isPasswordValidated ? primaryBlueColor : const Color(0xffF3F6F6);
+    return hasText && isPasswordValidated
+        ? primaryBlueColor
+        : const Color(0xffF3F6F6);
   }
 
   Color toggleContainerTextColor() {
-    Color color = hasText && isPasswordValidated ? Colors.white : const Color(0xff797C7B);
+    Color color =
+        hasText && isPasswordValidated ? Colors.white : const Color(0xff797C7B);
     return color;
   }
 }

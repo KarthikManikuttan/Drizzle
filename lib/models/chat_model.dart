@@ -6,6 +6,7 @@ class ChatModel {
   final String senderEmail;
   final String receiverId;
   final Timestamp timeStamp;
+  final String senderName;
 
   ChatModel({
     required this.senderId,
@@ -13,5 +14,6 @@ class ChatModel {
     required this.receiverId,
     required this.message,
     required this.timeStamp,
+    required this.senderName,
   });
 }

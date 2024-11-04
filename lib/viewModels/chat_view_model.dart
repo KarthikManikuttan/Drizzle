@@ -8,6 +8,7 @@ class ChatViewModel {
       'receiverId': chatModel.receiverId,
       'message': chatModel.message,
       'timeStamp': chatModel.timeStamp,
+      'senderName': chatModel.senderName,
     };
   }
 }

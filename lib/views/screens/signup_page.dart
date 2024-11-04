@@ -20,7 +20,8 @@ class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,8 @@ class SignUpPage extends StatelessWidget {
     final signUpProvider = Provider.of<SignUpProvider>(context);
     final authServices = Provider.of<AuthServices>(context);
 
-    bool isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    bool isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -56,7 +58,8 @@ class SignUpPage extends StatelessWidget {
                       height: 50,
                       width: 25,
                       color: Colors.transparent,
-                      child: SvgPicture.asset(isDarkMode ? AppIcons.backw : AppIcons.back)),
+                      child: SvgPicture.asset(
+                          isDarkMode ? AppIcons.backw : AppIcons.back)),
                 ),
                 const Spacer(),
                 Text(
@@ -70,7 +73,8 @@ class SignUpPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 30, bottom: 20, top: 10),
+                  padding:
+                      const EdgeInsets.only(right: 30, bottom: 20, top: 10),
                   child: Text(
                     "Get chatting with friends and family today by signing up for our chat app!",
                     style: TextStyle(
@@ -136,7 +140,8 @@ class SignUpPage extends StatelessWidget {
                 ),
                 const Spacer(flex: 2),
                 AuthButtonWidget(
-                  onTap: signUpProvider.hasText && signUpProvider.isPasswordValidated
+                  onTap: signUpProvider.hasText &&
+                          signUpProvider.isPasswordValidated
                       ? () async {
                           dynamic result = await authServices.signUpWithEmail(
                             signUpEmailModel: SignupEmailModel(
@@ -154,13 +159,15 @@ class SignUpPage extends StatelessWidget {
                             );
                           } else {
                             final snackBar = SnackBar(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                               duration: const Duration(seconds: 1),
                               content: Text(
                                 result,
                               ),
                             );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           }
                         }
                       : null,

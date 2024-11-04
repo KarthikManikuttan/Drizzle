@@ -13,7 +13,11 @@ class FirestoreServices {
 
     String fcm = await fcmToken();
     print("fcm ===== $fcm");
-    await AuthServices().firestore.collection("users").doc(userCredential.user!.uid).set(
+    await AuthServices()
+        .firestore
+        .collection("users")
+        .doc(userCredential.user!.uid)
+        .set(
       {
         'uid': userCredential.user!.uid,
         'email': AuthServices().getCurrentUser!.email,
@@ -27,7 +31,11 @@ class FirestoreServices {
   updateFcm(UserCredential userCredential) async {
     String fcm = await fcmToken();
 
-    await AuthServices().firestore.collection("users").doc(userCredential.user!.uid).update(
+    await AuthServices()
+        .firestore
+        .collection("users")
+        .doc(userCredential.user!.uid)
+        .update(
       {
         'fcmToken': fcm,
       },

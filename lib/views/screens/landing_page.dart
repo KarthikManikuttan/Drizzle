@@ -67,7 +67,8 @@ class LandingPage extends StatelessWidget {
                       CircleImgContainer(
                         img: AppIcons.fbIcon,
                         onTap: () async {
-                          dynamic result = await authServices.signInWithFacebook();
+                          dynamic result =
+                              await authServices.signInWithFacebook();
                           if (result == null) {
                             Navigator.pushReplacement(
                               context,
@@ -77,13 +78,15 @@ class LandingPage extends StatelessWidget {
                             );
                           } else {
                             final snackBar = SnackBar(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                               duration: const Duration(seconds: 1),
                               content: const Text(
                                 "Unexpected  error occured !",
                               ),
                             );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           }
                         },
                       ),
@@ -91,7 +94,8 @@ class LandingPage extends StatelessWidget {
                       CircleImgContainer(
                         img: AppIcons.googleIcon,
                         onTap: () async {
-                          dynamic result = await AuthServices().signInWithGoogle();
+                          dynamic result =
+                              await AuthServices().signInWithGoogle();
                           if (result == null) {
                             Navigator.pushReplacement(
                               context,
@@ -101,13 +105,15 @@ class LandingPage extends StatelessWidget {
                             );
                           } else {
                             final snackBar = SnackBar(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                               duration: const Duration(seconds: 1),
                               content: Text(
                                 result,
                               ),
                             );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           }
                         },
                       ),
