@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drizzle/viewModels/services/notification_services.dart';
+import 'package:drizzle/viewModels/services/user_state_service.dart';
 import 'package:drizzle/views/theme/theme.dart';
 import 'package:drizzle/views/utils/utils.dart';
 import 'package:drizzle/views/widgets/build_message_container.dart';
@@ -40,7 +42,7 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     ChatPage.activeChatId = ChatServices().getChatId(senderId, widget.receiverId);
 
-    NotificationServices().listenForNewMessages(senderId, widget.receiverId);
+    NotificationServices().listenForNewMessages(senderId, widget.receiverId, icon: widget.imgPath);
   }
 
   @override
@@ -80,14 +82,42 @@ class _ChatPageState extends State<ChatPage> {
                 radius: 23,
               ),
               const SizedBox(width: 20),
-              Text(
-                widget.userName,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 15,
-                  fontWeight: FontWeight.normal,
-                  fontFamily: "Caros",
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.userName,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 15,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: "Caros",
+                    ),
+                  ),
+                  SizedBox(
+                    width: 50,
+                    height: 30,
+                    child: StreamBuilder<DocumentSnapshot>(
+                      stream: UserStateService().getUserStatus(receiverId: widget.receiverId),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data!['status'] ?? "offline",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              fontFamily: "Caros",
+                            ),
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

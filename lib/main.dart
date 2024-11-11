@@ -11,6 +11,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -22,6 +24,8 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
+  final appDocDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocDir.path);
 
   await AwesomeNotifications().initialize(
     null,
@@ -33,11 +37,13 @@ void main() async {
         channelDescription: 'Notification Channel for basic tests',
         defaultColor: const Color(0xff9D50DD),
         ledColor: Colors.white,
-        importance: NotificationImportance.Max,
+        importance: NotificationImportance.High,
         channelShowBadge: true,
         onlyAlertOnce: true,
         playSound: true,
         criticalAlerts: true,
+        enableVibration: true,
+        soundSource: 'resource://raw/notification',
       ),
     ],
     channelGroups: [

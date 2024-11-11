@@ -3,7 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drizzle/viewModels/services/auth_services.dart';
 import 'package:drizzle/viewModels/services/chat_services.dart';
-import 'package:drizzle/viewModels/services/notification_services.dart';
+import 'package:drizzle/viewModels/services/user_state_service.dart';
 import 'package:drizzle/views/screens/chat_page.dart';
 import 'package:drizzle/views/screens/landing_page.dart';
 import 'package:drizzle/views/theme/theme.dart';
@@ -12,12 +12,34 @@ import 'package:drizzle/views/utils/app_images.dart';
 import 'package:drizzle/views/utils/utils.dart';
 import 'package:drizzle/views/widgets/circle_img_container.dart';
 import 'package:drizzle/views/widgets/build_user_tile_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 
-class Homepage extends StatelessWidget {
-  Homepage({super.key});
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
 
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   final ChatServices chatServices = ChatServices();
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+  
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      UserStateService().updateUserState(status: "online");
+    } else {
+      UserStateService().updateUserState(status: timeago.format(DateTime.now()));
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   @override
   Widget build(BuildContext context) {

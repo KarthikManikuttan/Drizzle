@@ -24,6 +24,7 @@ class FirestoreServices {
         'userName': userName,
         'profileImage': AuthServices().getCurrentUser!.photoURL,
         'fcmToken': fcm,
+        'status' : 'online',
       },
     );
   }

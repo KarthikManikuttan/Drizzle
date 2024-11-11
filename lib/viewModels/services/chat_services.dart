@@ -15,16 +15,6 @@ class ChatServices {
     });
   }
 
-  Stream<QuerySnapshot> getLastMessage(String senderId, String receiverId) {
-    return FirebaseFirestore.instance
-        .collection('chats')
-        .doc(getChatId(senderId, receiverId))
-        .collection('messages')
-        .orderBy('timestamp', descending: true)
-        .limit(1)
-        .snapshots();
-  }
-
   String getChatId(senderId, receiverId) {
     List<String> ids = [senderId, receiverId];
     ids.sort();
@@ -44,7 +34,7 @@ class ChatServices {
       receiverId: receiverId,
       message: message,
       timeStamp: timestamp,
-      senderName : currentUserName,
+      senderName: currentUserName,
     );
     List<String> ids = [currentUserId, receiverId];
     ids.sort();
